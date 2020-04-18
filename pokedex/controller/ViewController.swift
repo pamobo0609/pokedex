@@ -15,8 +15,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     @IBOutlet weak var collection: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var pokemons = [Pokemon]()
-    var filteredPokemons = [Pokemon]()
+    var pokemons = [PokemonVo]()
+    var filteredPokemons = [PokemonVo]()
     var musicPlayer: AVAudioPlayer!
     var inSearchMode = false
     
@@ -53,7 +53,10 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             for row in rows {
                 let pokeId = Int(row["id"]!)!
                 let pokeName = row["identifier"]!
-                pokemons.append(Pokemon(aName: pokeName, anId: pokeId))
+                pokemons.append(PokemonVo.builder
+                    .pokedexId(anId: pokeId)
+                    .name(aName: pokeName)
+                    .build())
             }
             
         } catch let err as NSError {
@@ -65,7 +68,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PokeCell", for: indexPath) as? PokeCell {
             
-            let pokemon: Pokemon!
+            let pokemon: PokemonVo!
             if inSearchMode {
                 pokemon = filteredPokemons[indexPath.row]
             } else {
@@ -98,7 +101,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        var poke: Pokemon!
+        var poke: PokemonVo!
         if inSearchMode {
             poke = filteredPokemons[indexPath.row]
         } else {
@@ -138,7 +141,7 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "PokemonDetailVC" {
             if let details = segue.destination as? PokemonDetailViewController {
-                if let poke = sender as? Pokemon {
+                if let poke = sender as? PokemonVo {
                     details.pokemon = poke
                 }
             }

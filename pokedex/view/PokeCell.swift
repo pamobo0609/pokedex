@@ -13,14 +13,14 @@ class PokeCell: UICollectionViewCell {
     @IBOutlet weak var thumbImg: UIImageView!
     @IBOutlet weak var nameLbl: UILabel!
     
-    var pokemon: Pokemon!
+    var pokemon: PokemonVo!
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         layer.cornerRadius = 5.0
     }
     
-    func configureCell(pokemon: Pokemon) {
+    func configureCell(pokemon: PokemonVo) {
         self.pokemon = pokemon
         
         self.nameLbl.text = self.pokemon.name.capitalized
